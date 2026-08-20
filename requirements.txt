@@ -1,0 +1,13 @@
+# Core requirements for predict.py (the shipped TF-IDF model):
+pandas>=2.0
+scikit-learn>=1.5
+joblib>=1.3
+
+# Additional requirements for train.py, which also runs a SPECTER2
+# comparison (documented methodology -- see train.py's docstring for why
+# TF-IDF ships instead) and a McNemar's test against K2-Think-V2:
+numpy>=1.26
+torch>=2.0
+transformers>=4.40
+adapters>=1.0
+statsmodels>=0.14

@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+env/
+
+# OS
+.DS_Store
+
+# Labeled review data -- not included in this public repo (see README for
+# the expected CSV schema so you can plug in your own data)
+answer.csv
+k2result.csv
+cv_predictions.csv
+predictions.csv

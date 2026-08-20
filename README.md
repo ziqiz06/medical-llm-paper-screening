@@ -36,9 +36,16 @@ this sample size.
 
 ## Findings
 
-The path from "SPECTER2 loses badly to an LLM" to "TF-IDF ties an LLM"
-involved ruling out several wrong hypotheses before finding what actually
-mattered:
+The path from "SPECTER2 loses badly to an LLM" to "TF-IDF ties an LLM" went
+through a few wrong hypotheses first: **SPECTER2 losing to plain TF-IDF**
+was the red flag that started the investigation, a **title-embedding
+concatenation bug** turned out to be quietly hurting the embedding model,
+and a **counterintuitive TF-IDF fix** (keeping stopwords instead of
+removing them) closed most of the remaining gap to K2-Think-V2 — confirmed
+with McNemar's paired test rather than eyeballed accuracy deltas.
+
+<details>
+<summary>Full investigation trail (7 steps)</summary>
 
 1. **Started with SPECTER2** (a transformer pretrained specifically on
    scientific papers, with a classification adapter attached) — assumed
@@ -71,6 +78,8 @@ The full investigation, including the ablations, hyperparameter sweeps,
 and error analysis of exactly which papers TF-IDF gets wrong that K2
 doesn't, is preserved as documented methodology in `train.py`.
 
+</details>
+
 ## Repo structure
 
 ```
@@ -86,19 +95,10 @@ can run this against your own labeled data.
 
 ## Data schema
 
-`train.py` expects a CSV (`answer.csv`) with columns:
-
-| Column | Type | Description |
-|---|---|---|
-| `pmid` | int | PubMed ID (used to join against K2-Think-V2's output, not for training) |
-| `title` | str | Paper title |
-| `abstract` | str | Paper abstract (may be blank — filled with title-only text) |
-| `Exclude` | bool | `TRUE` if the paper should be excluded (label = `NOT Exclude`) |
-
-`train.py`'s optional K2-Think-V2 comparison step (6a/6b) expects a second
-CSV (`k2result.csv`) with columns `pmid, title, abstract, llm_exclude`
-(same `Exclude`-style convention). If you don't have this, comment out
-step 6 in `train.py`.
+`train.py` expects `answer.csv` with columns `pmid, title, abstract, Exclude`,
+and (for the optional K2-Think-V2 comparison in step 6) `k2result.csv` with
+`pmid, title, abstract, llm_exclude`. Full column semantics are documented
+in `train.py`'s header comments.
 
 ## Usage
 

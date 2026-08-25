@@ -122,6 +122,3 @@ dependencies, since the shipped model is TF-IDF-based.
 `pandas` · `PyTorch` + HuggingFace `transformers`/`adapters` (SPECTER2
 comparison only) · `statsmodels` (McNemar's test)
 
-## License
-
-MIT — see [LICENSE](LICENSE).
